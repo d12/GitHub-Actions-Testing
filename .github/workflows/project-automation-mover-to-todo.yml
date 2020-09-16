@@ -26,13 +26,5 @@ jobs:
             exit 0
           fi
 
-          LABELS="${{github.event.issue.labels}}"
-          echo $LABELS
+          LABELS="${{github.event.issue.labels.count}}"
           echo "$LABELS"
-          
-          LABELS="${LABELS//'%'/'%25'}"
-          LABELS="${LABELS//$'\n'/'%0A'}"
-          LABELS="${LABELS//$'\r'/'%0D'}"
-
-          echo "$LABELS"
-          echo $LABELS
