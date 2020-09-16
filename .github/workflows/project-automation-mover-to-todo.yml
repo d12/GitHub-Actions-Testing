@@ -26,5 +26,5 @@ jobs:
             exit 0
           fi
 
-          LABELS="${{github.event.issue.labels.count}}"
+          LABELS="${{github.event.issue.labels.length}}"
           echo "$LABELS"
