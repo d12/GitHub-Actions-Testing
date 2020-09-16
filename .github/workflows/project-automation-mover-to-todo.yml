@@ -20,7 +20,7 @@ jobs:
           PROJECT_IN_PROGRESS_COL_ID=10860614
           PROJECT_DONE_COL_ID=10860615
           
-          if [ "$ACTION" -ne "assigned" ]
+          if [ "$ACTION" != "assigned" ]
           then
             echo "Not an assigned issue, bailing."
             exit 0
