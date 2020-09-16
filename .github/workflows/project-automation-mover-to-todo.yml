@@ -3,6 +3,7 @@ name: Project Automation - Mover to Todo
 on:
   issues:
     types: [assigned, unassigned]
+    
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -10,7 +11,6 @@ jobs:
     steps:
       - name: Move to TODO
         run: |
-          LABEL_NAME="${{github.event.label.name}}"
           ACTION="${{github.event.action}}"
           ISSUE_TITLE="${{github.event.issue.title}}"
           ISSUE_URL="${{github.event.issue.url}}"
@@ -20,26 +20,10 @@ jobs:
           PROJECT_IN_PROGRESS_COL_ID=10860614
           PROJECT_DONE_COL_ID=10860615
           
-          if [[ $LABEL_NAME = "test" ]]
+          if [ "$ACTION" -ne "assigned" ]
           then
-            if [[ $ACTION = "labeled" ]]
-            then
-              echo "Test label was added to $ISSUE_TITLE"
-            else
-              echo "Test label was removed from $ISSUE_TITLE"
-              echo "Not interesting. Skipping"
-              exit 0
-            fi
-          else
-            echo "Not an interesting event. Skipping"
+            echo "Not an assigned issue, bailing."
             exit 0
           fi
-          
-          echo "Adding note to project board"
-          
-          curl \
-          --url https://api.github.com/projects/columns/$PROJECT_TODO_COL_ID/cards \
-          -X POST \
-          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-           --header 'accept: application/vnd.github.inertia-preview+json' \
-          -d "{\"note\":\"(**From Borg**) [$ISSUE_TITLE]($ISSUE_URL)\nUnassigned\"}"
+
+          echo "${{github.event.issue.labels}}"
