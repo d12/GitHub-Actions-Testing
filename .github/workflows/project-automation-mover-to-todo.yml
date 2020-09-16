@@ -28,7 +28,7 @@ jobs:
 
           LABELS_JSON='${{toJson(github.event.issue.labels)}}'
           echo "$LABELS_JSON"
-          MATCHING_LABEL_COUNT=$(echo LABELS_JSON | jq '.[].name' | grep -w "test" | wc -l)
+          MATCHING_LABEL_COUNT=$(echo '$LABELS_JSON' | jq '.[].name' | grep -w "test" | wc -l)
           
           if [ "$MATCHING_LABEL_COUNT" == "1" ]
           then
