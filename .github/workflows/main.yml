@@ -52,6 +52,6 @@ jobs:
           curl \
           --url https://api.github.com/projects/columns/$PROJECT_TODO_COL_ID/cards \
           -X POST \
-          --header 'authorization: Bearer ${{ secrets.AUTH_TOKEN }}' \
+          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
           -d '{"note":"(**From Borg**) [$ISSUE_TITLE]($ISSUE_URL)\nUnassigned"}'
           
