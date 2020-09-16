@@ -26,5 +26,4 @@ jobs:
             exit 0
           fi
 
-          LABELS="${{toJson(github.event.issue.labels.length)}}"
-          echo "$LABELS"
+          echo "${{toJson(github.event.issue.labels)}}"
