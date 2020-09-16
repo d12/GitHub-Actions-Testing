@@ -53,5 +53,6 @@ jobs:
           --url https://api.github.com/projects/columns/$PROJECT_TODO_COL_ID/cards \
           -X POST \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+           --header 'accept: application/vnd.github.inertia-preview+json' \
           -d '{"note":"(**From Borg**) [$ISSUE_TITLE]($ISSUE_URL)\nUnassigned"}'
           
