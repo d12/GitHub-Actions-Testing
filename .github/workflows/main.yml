@@ -21,4 +21,17 @@ jobs:
       - uses: actions/checkout@v2
         
       - name: Access the payload
-        run: echo "${{github.event.label.name}}"
+        run: |
+          LABEL_NAME="${{github.event.label.name}}"
+          ACTION="${{github.event.action}}"
+          ISSUE_TITLE="${{github.event.issue.title}}"
+          
+          if [[ $LABEL_NAME = "test" ]]
+          then
+            if [[ $ACTION = "labeled" ]]
+            then
+              echo "Test label was added to $ISSUE_TITLE"
+            else
+              echo "Test label was removed from $ISSUE_TITLE"
+            fi
+          fi
