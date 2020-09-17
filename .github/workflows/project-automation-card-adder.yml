@@ -25,7 +25,7 @@ jobs:
           LABEL_NAME="${{github.event.label.name}}"
           ACTION="${{github.event.action}}"
           ISSUE_TITLE="${{github.event.issue.title}}"
-          ISSUE_URL="${{github.event.issue.url}}"
+          ISSUE_URL="${{github.event.issue.html_url}}"
           ISSUE_NUMBER="${{github.event.issue.number}}"
           
           PROJECT_BOARD_ID=5484631
@@ -67,5 +67,5 @@ jobs:
           -sS \
           -X POST \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          -d "{\"body\":\"Beep boop. Because this was labeled with $MAGIC_LABEL_NAME, I've added it to [the shared project board]($CARD_URL).\"}" > /dev/null
+          -d "{\"body\":\"Beep boop. Because this was labeled with $MAGIC_LABEL_NAME, I've added it to [the shared project board]($CARD_URL).\"}"
           
