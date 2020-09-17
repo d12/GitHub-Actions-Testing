@@ -53,7 +53,7 @@ jobs:
           -X POST \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
           --header 'accept: application/vnd.github.inertia-preview+json' \
-          -d "{\"position\":\"body\", \"column_id\":${PROJECT_IN_PROGRESS_COL_ID}}"
+          -d "{\"position\":\"bottom\", \"column_id\":${PROJECT_IN_PROGRESS_COL_ID}}"
           
           echo "Card moved to In Progress."
           
