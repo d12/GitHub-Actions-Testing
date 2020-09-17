@@ -43,7 +43,7 @@ jobs:
           -sS \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' > comments_payload
            
-          CARD_ID=$(cat comments_payload | jq '.[].body' | grep -oP "Card ID: \d+" | grep -oP "\d+")
+          CARD_ID=$(cat comments_payload | jq '.[].body' | grep -oP "Card ID: \d+" | grep -oP "\d+" | tail -1)
           
           echo "Found card ID ${CARD_ID}. Moving to TODO."
           
