@@ -46,6 +46,7 @@ jobs:
           
           echo "Printing the other thing"
           
+          grep -v
           cat comments_payload | jq '.[].body' | grep "Card ID"
           
           echo "Done"
