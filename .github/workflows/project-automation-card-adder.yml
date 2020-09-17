@@ -21,7 +21,7 @@ jobs:
         
       - name: Run the Ruby Script
         run: |
-          cd .github/scripts/card-adder
+          cd .github/scripts/card_adder
           bundle
           ruby card_adder.rb \
             --label_name "${{github.event.label.name}}" \
