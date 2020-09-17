@@ -26,13 +26,17 @@ jobs:
           ACTION="${{github.event.action}}"
           ISSUE_TITLE="${{github.event.issue.title}}"
           ISSUE_URL="${{github.event.issue.url}}"
+          ISSUE_NUMBER="${{github.event.issue.number}}"
           
           PROJECT_BOARD_ID=5484631
           PROJECT_TODO_COL_ID=10860613
           PROJECT_IN_PROGRESS_COL_ID=10860614
           PROJECT_DONE_COL_ID=10860615
+          PROJECT_BOARD_URL="https://github.com/d12/GitHub-Actions-Testing/projects/1"
           
-          if [[ $LABEL_NAME = "test" ]]
+          MAGIC_LABEL_NAME="test"
+          
+          if [[ $LABEL_NAME = $MAGIC_LABEL_NAME ]]
           then
             if [[ $ACTION = "labeled" ]]
             then
@@ -47,12 +51,20 @@ jobs:
             exit 0
           fi
           
-          echo "Adding note to project board"
-          
+          echo "Adding note to project board..."
           curl \
           --url https://api.github.com/projects/columns/$PROJECT_TODO_COL_ID/cards \
           -X POST \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
            --header 'accept: application/vnd.github.inertia-preview+json' \
-          -d "{\"note\":\"(**From Borg**) [$ISSUE_TITLE]($ISSUE_URL)\nUnassigned\"}"
+          -d "{\"note\":\"(**From Borg**) [$ISSUE_TITLE]($ISSUE_URL)\nUnassigned\"}" > add_card_payload
+           
+          cat add_card_payload | jq 
+           
+          echo "Adding comment to issue..."
+          #curl \
+          #--url https://api.github.com/repos/d12/GitHub-Actions-Testing/issues/${ISSUE_NUMBER}/comments
+          #-X POST
+          #--header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+          #-d "{\"body\":\"Beep boop. Because this was labeled with $MAGIC_LABEL_NAME, I've added it to [the shared project board](https://github.com/d12/GitHub-Actions-Testing/projects/1).\n\n<sub>Card ID: \"}" > /dev/null
           
