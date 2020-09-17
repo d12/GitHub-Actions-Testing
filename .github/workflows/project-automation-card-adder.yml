@@ -19,8 +19,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         
-      - name: Run a Ruby script
-        run: ruby .github/scripts/card_adder.rb
+      - name: Run the Ruby Script
+        run: |
+          cd .github/scripts/card-adder
+          bundle
+          ruby card_adder.rb
       
       - name: Access the payload
         run: |
