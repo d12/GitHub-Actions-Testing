@@ -14,6 +14,7 @@ jobs:
           ACTION="${{github.event.action}}"
           ISSUE_TITLE="${{github.event.issue.title}}"
           ISSUE_URL="${{github.event.issue.url}}"
+          ISSUE_NUMBER="${{github.event.issue.number}}"
           
           PROJECT_BOARD_ID=5484631
           PROJECT_TODO_COL_ID=10860613
