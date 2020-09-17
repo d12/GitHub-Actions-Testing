@@ -20,6 +20,7 @@ jobs:
           PROJECT_TODO_COL_ID=10860613
           PROJECT_IN_PROGRESS_COL_ID=10860614
           PROJECT_DONE_COL_ID=10860615
+          PROJECT_BOARD_URL="https://github.com/d12/GitHub-Actions-Testing/projects/1"
           
           if [ "$ACTION" != "assigned" ]
           then
@@ -62,5 +63,5 @@ jobs:
           -sS \
           -X POST \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          -d "{\"body\":\"Beep boop. I noticed you've assigned this issue so I moved it to TODO on the [project board](${PROJECT_URL}) for you.\"}"
+          -d "{\"body\":\"Beep boop. I noticed you've assigned this issue so I moved it to TODO on the [project board](${PROJECT_BOARD_URL}) for you.\"}"
           
