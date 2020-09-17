@@ -19,11 +19,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         
+      - name: Setup Ruby env
+        run: |
+          cd .github/scripts/card_adder
+        
+          sudo RUBYOPT="-W0" gem install bundler
+          RUBYOPT="-W0" bundle install
+        
       - name: Run the Ruby Script
         run: |
-          cd .github/scripts/card-adder
-          bundle
-          ruby card_adder.rb
+          cd .github/scripts/card_adder
+          
+          RUBYOPT="-W0" bundle exec ruby card_adder.rb \
+            --label_name "${{github.event.label.name}}" \
+            --action "${{github.event.action}}"
       
       - name: Access the payload
         run: |
@@ -32,11 +41,8 @@ jobs:
           ISSUE_TITLE="${{github.event.issue.title}}"
           ISSUE_URL="${{github.event.issue.html_url}}"
           ISSUE_NUMBER="${{github.event.issue.number}}"
-          
-          PROJECT_BOARD_ID=5484631
+
           PROJECT_TODO_COL_ID=10860613
-          PROJECT_IN_PROGRESS_COL_ID=10860614
-          PROJECT_DONE_COL_ID=10860615
           PROJECT_BOARD_URL="https://github.com/d12/GitHub-Actions-Testing/projects/1"
           
           MAGIC_LABEL_NAME="test"
