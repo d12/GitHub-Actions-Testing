@@ -25,10 +25,8 @@ jobs:
             echo "Not an assigned issue, bailing."
             exit 0
           fi
-
-          LABELS_JSON='${{toJson(github.event.issue.labels)}}'
-          echo "$LABELS_JSON" | jq '.[].name' | grep -w "test" | wc -l > matching_label_count
-          MATCHING_LABEL_COUNT=$(cat matching_label_count)
+          
+          MATCHING_LABEL_COUNT=$(echo '${{toJson(github.event.issue.labels)}}' | jq '.[].name' | grep -w "test" | wc -l)
           
           if [ "$MATCHING_LABEL_COUNT" == "1" ]
           then
