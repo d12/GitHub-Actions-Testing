@@ -42,8 +42,10 @@ jobs:
           -sS \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' > comments_payload
            
-          cat comments_payload
           cat comments_payload | jq '.[].body' 
+          
+          echo "Printing the other thing"
+          
           cat comments_payload | jq '.[].body' | grep -o "Card ID: \d+"
-           
-          cat comments_payload | jq '.[].body' | grep -o "Card ID: \d+" | grep -o "\d+" | tail -1
+          
+          echo "Done"
