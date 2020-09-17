@@ -59,9 +59,7 @@ jobs:
           --header 'accept: application/vnd.github.inertia-preview+json' \
           -d "{\"note\":\"(**From Borg**) [$ISSUE_TITLE]($ISSUE_URL)\nUnassigned\"}" > add_card_payload
    
-          CARD_URL=$(cat add_card_payload | jq .column_url)
-          echo "$CARD_URL"
-          echo "{\"body\":\"Beep boop. Because this was labeled with $MAGIC_LABEL_NAME, I've added it to [the shared project board]($CARD_URL).\"}"
+          CARD_URL=$(cat add_card_payload | jq .column_url -r)
            
           echo "Adding comment to issue..."
           curl \
