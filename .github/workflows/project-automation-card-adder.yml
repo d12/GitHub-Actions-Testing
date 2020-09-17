@@ -17,6 +17,14 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - uses: actions/checkout@v2
+        
+      - name: Run the Ruby Script
+        run: |
+          cd .github/scripts/card-adder
+          bundle
+          ruby card_adder.rb
+      
       - name: Access the payload
         run: |
           LABEL_NAME="${{github.event.label.name}}"
