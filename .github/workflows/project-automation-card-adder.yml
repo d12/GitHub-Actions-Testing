@@ -22,13 +22,11 @@ jobs:
       - name: Run the Ruby Script
         run: |
           cd .github/scripts/card_adder
+        
+          sudo RUBYOPT="-W0" gem install bundler
+          RUBYOPT="-W0" bundle install
           
-          export RUBYOPT="-W0"
-          
-          sudo gem install bundler
-          bundle install
-          
-          bundle exec ruby card_adder.rb \
+          RUBYOPT="-W0" bundle exec ruby card_adder.rb \
             --label_name "${{github.event.label.name}}" \
             --action "${{github.event.action}}"
       
