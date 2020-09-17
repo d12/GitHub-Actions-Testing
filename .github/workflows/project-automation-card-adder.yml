@@ -36,36 +36,36 @@ jobs:
           
           MAGIC_LABEL_NAME="test"
           
-          if [[ $LABEL_NAME = $MAGIC_LABEL_NAME ]]
+          if [[ $LABEL_NAME != $MAGIC_LABEL_NAME ]]
           then
-            if [[ $ACTION = "labeled" ]]
-            then
-              echo "Test label was added to $ISSUE_TITLE"
-            else
-              echo "Test label was removed from $ISSUE_TITLE"
-              echo "Not interesting. Skipping"
-              exit 0
-            fi
-          else
-            echo "Not an interesting event. Skipping"
+            echo "Not an interesting label. Skipping."
             exit 0
           fi
+          
+          if [[ $ACTION != "labeled" ]]
+          then
+            echo "Label was removed, not added. Skipping."
+            exit 0
+          fi
+          
+          echo "Magic label was added to issue."
           
           echo "Adding note to project board..."
           curl \
           --url https://api.github.com/projects/columns/$PROJECT_TODO_COL_ID/cards \
+          -sS \
           -X POST \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
            --header 'accept: application/vnd.github.inertia-preview+json' \
           -d "{\"note\":\"(**From Borg**) [$ISSUE_TITLE]($ISSUE_URL)\nUnassigned\"}" > add_card_payload
-           
-          CARD_ID=$(cat add_card_payload | jq .id)
+   
           CARD_URL=$(cat add_card_payload | jq .id)
            
           echo "Adding comment to issue..."
           curl \
           --url https://api.github.com/repos/d12/GitHub-Actions-Testing/issues/${ISSUE_NUMBER}/comments \
+          -sS \
           -X POST \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          -d "{\"body\":\"Beep boop. Because this was labeled with $MAGIC_LABEL_NAME, I've added it to [the shared project board]($CARD_URL).\n\n<sub>Card ID: $CARD_ID\"}" > /dev/null
+          -d "{\"body\":\"Beep boop. Because this was labeled with $MAGIC_LABEL_NAME, I've added it to [the shared project board]($CARD_URL)."}" > /dev/null
           
