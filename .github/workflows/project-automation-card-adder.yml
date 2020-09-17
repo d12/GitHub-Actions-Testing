@@ -59,7 +59,9 @@ jobs:
            --header 'accept: application/vnd.github.inertia-preview+json' \
           -d "{\"note\":\"(**From Borg**) [$ISSUE_TITLE]($ISSUE_URL)\nUnassigned\"}" > add_card_payload
            
-          cat add_card_payload | jq 
+          cat add_card_payload
+           
+          cat add_card_payload | jq .
            
           echo "Adding comment to issue..."
           #curl \
