@@ -50,6 +50,6 @@ jobs:
           
           echo "One more..."
           
-          cat comments_payload | jq '.[].body' | grep "Card ID:" | grep -oP "\d+"
+          cat comments_payload | jq '.[].body' | grep -oP "Card ID: \d+" | grep -oP "\d+"
           
           echo "Done"
