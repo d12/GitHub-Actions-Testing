@@ -52,6 +52,7 @@ jobs:
           -sS \
           -X POST \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+          --header 'accept: application/vnd.github.inertia-preview+json' \
           -d "{\"position\":\"body\", \"column_id\":${PROJECT_IN_PROGRESS_COL_ID}}"
           
           echo "Card moved to In Progress."
@@ -63,5 +64,5 @@ jobs:
           -sS \
           -X POST \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          -d "{\"body\":\"Beep boop. I noticed you've assigned this issue so I moved it to TODO on the [project board](${PROJECT_BOARD_URL}) for you.\"}"
+          -d "{\"body\":\"Beep boop. I noticed you've assigned this issue so I moved it to In Progress on the [project board](${PROJECT_BOARD_URL}) for you.\"}"
           
