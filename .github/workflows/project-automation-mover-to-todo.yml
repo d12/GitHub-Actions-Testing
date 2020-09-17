@@ -34,3 +34,11 @@ jobs:
           else
             echo "Issue does not have matching label, exiting"
           fi
+          
+          echo "Looking for project card ID..."
+          curl \
+          --url https://api.github.com/repos/d12/GitHub-Actions-Testing/issues/${ISSUE_NUMBER}/comments \
+          -sS \
+          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' > comments_payload
+           
+          cat comments_payload
