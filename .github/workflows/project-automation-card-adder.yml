@@ -67,5 +67,5 @@ jobs:
           -sS \
           -X POST \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          -d "{\"body\":\"Beep boop. Because this was labeled with $MAGIC_LABEL_NAME, I've added it to [the shared project board]($CARD_URL).\"}"
+          -d "{\"body\":\"Beep boop. Because this was labeled with $MAGIC_LABEL_NAME, I've added it to [the shared project board]($PROJECT_BOARD_URL).\"}"
           
