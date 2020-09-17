@@ -19,13 +19,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         
-      - name: Run the Ruby Script
+      - name: Setup Ruby env
         run: |
           cd .github/scripts/card_adder
         
           sudo RUBYOPT="-W0" gem install bundler
           RUBYOPT="-W0" bundle install
-          
+        
+      - name: Run the Ruby Script
+        run: |
           RUBYOPT="-W0" bundle exec ruby card_adder.rb \
             --label_name "${{github.event.label.name}}" \
             --action "${{github.event.action}}"
