@@ -6,6 +6,7 @@ opts = Slop.parse do |o|
   o.string "--issue_title", "The title of the issue"
   o.string "--issue_url", "The URL of the issue"
   o.string "--issue_number", "The number of the issue"
+  o.string "--github_token", "The GitHub token"
 end
 
 puts opts.to_h
