@@ -42,14 +42,25 @@ jobs:
           -sS \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' > comments_payload
            
-          cat comments_payload | jq '.[].body' 
+          CARD_ID=$(cat comments_payload | jq '.[].body' | grep -oP "Card ID: \d+" | grep -oP "\d+")
           
-          echo "Printing the other thing"
+          echo "Found card ID ${CARD_ID}. Moving to TODO."
           
-          cat comments_payload | jq '.[].body' | grep "Card ID:"
+          curl \
+          --url https://api.github.com/projects/columns/cards/${CARD_ID}/moves \
+          -sS \
+          -X POST \
+          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+          -d "{\"position\":\"body\", \"column_id\":${PROJECT_TODO_COL_ID}}"
           
-          echo "One more..."
+          echo "Card moved to TODO."
           
-          cat comments_payload | jq '.[].body' | grep -oP "Card ID: \d+" | grep -oP "\d+"
+          echo "Creating a comment on the issue..."
           
-          echo "Done"
+          curl \
+          --url https://api.github.com/repos/d12/GitHub-Actions-Testing/issues/${ISSUE_NUMBER}/comments \
+          -sS \
+          -X POST \
+          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+          -d "{\"body\":\"Beep boop. I noticed you've assigned this issue so I moved it to TODO on the [project board](${PROJECT_URL}) for you.\"}"
+          
