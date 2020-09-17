@@ -45,16 +45,16 @@ jobs:
            
           CARD_ID=$(cat comments_payload | jq '.[].body' | grep -oP "Card ID: \d+" | grep -oP "\d+" | tail -1)
           
-          echo "Found card ID ${CARD_ID}. Moving to TODO."
+          echo "Found card ID ${CARD_ID}. Moving to In Progress."
           
           curl \
           --url https://api.github.com/projects/columns/cards/${CARD_ID}/moves \
           -sS \
           -X POST \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          -d "{\"position\":\"body\", \"column_id\":${PROJECT_TODO_COL_ID}}"
+          -d "{\"position\":\"body\", \"column_id\":${PROJECT_IN_PROGRESS_COL_ID}}"
           
-          echo "Card moved to TODO."
+          echo "Card moved to In Progress."
           
           echo "Creating a comment on the issue..."
           
