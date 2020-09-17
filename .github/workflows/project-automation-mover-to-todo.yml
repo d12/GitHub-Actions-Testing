@@ -44,6 +44,6 @@ jobs:
            
           cat comments_payload
           cat comments_payload | jq '.[].body' 
-          cat comments_payload | jq '.[].body' | egrep -o "Card ID: \d+"
+          cat comments_payload | jq '.[].body' | grep -o "Card ID: \d+"
            
-          cat comments_payload | jq '.[].body' | egrep -o "Card ID: \d+" | egrep -o "\d+" | tail -1
+          cat comments_payload | jq '.[].body' | grep -o "Card ID: \d+" | grep -o "\d+" | tail -1
