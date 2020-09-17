@@ -42,4 +42,4 @@ jobs:
           -sS \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' > comments_payload
            
-          cat comments_response | jq '.[].body' | egrep -o "Card ID: \d+" | egrep -o "\d+" | tail -1
+          cat comments_payload | jq '.[].body' | egrep -o "Card ID: \d+" | egrep -o "\d+" | tail -1
