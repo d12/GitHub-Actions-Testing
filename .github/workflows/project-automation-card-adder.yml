@@ -23,7 +23,9 @@ jobs:
         run: |
           cd .github/scripts/card-adder
           bundle
-          ruby card_adder.rb
+          ruby card_adder.rb \
+            --label_name "${{github.event.label.name}}" \
+            --action "${{github.event.action}}"
       
       - name: Access the payload
         run: |
