@@ -59,14 +59,13 @@ jobs:
            --header 'accept: application/vnd.github.inertia-preview+json' \
           -d "{\"note\":\"(**From Borg**) [$ISSUE_TITLE]($ISSUE_URL)\nUnassigned\"}" > add_card_payload
            
-          cat add_card_payload
-           
-          cat add_card_payload | jq .
+          CARD_ID=$(cat add_card_payload | jq .id)
+          CARD_URL=$(cat add_card_payload | jq .id)
            
           echo "Adding comment to issue..."
-          #curl \
-          #--url https://api.github.com/repos/d12/GitHub-Actions-Testing/issues/${ISSUE_NUMBER}/comments
-          #-X POST
-          #--header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          #-d "{\"body\":\"Beep boop. Because this was labeled with $MAGIC_LABEL_NAME, I've added it to [the shared project board](https://github.com/d12/GitHub-Actions-Testing/projects/1).\n\n<sub>Card ID: \"}" > /dev/null
+          curl \
+          --url https://api.github.com/repos/d12/GitHub-Actions-Testing/issues/${ISSUE_NUMBER}/comments
+          -X POST
+          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+          -d "{\"body\":\"Beep boop. Because this was labeled with $MAGIC_LABEL_NAME, I've added it to [the shared project board]($CARD_URL).\n\n<sub>Card ID: $CARD_ID\"}" > /dev/null
           
