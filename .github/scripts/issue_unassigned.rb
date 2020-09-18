@@ -41,6 +41,14 @@ def move_card_to_todo!(card_id)
   github_client.move_project_card(card_id, "bottom", column_id: PROJECT_TODO_COLUMN_ID)
 end
 
+def add_comment_to_issue!
+  github_client.add_comment(GITHUB_REPO_NWO,
+    args[:issue_number],
+    "Beep boop. I saw you unassigned this issue so I've moved it to todo \
+     on [the shared project board](#{GITHUB_PROJECT_BOARD_URL})."
+  )
+end
+
 # Script begin
 
 puts "Arguments: #{args.to_h}"
@@ -61,5 +69,7 @@ end
 puts "Found card ID #{card_id}, moving to todo..."
 
 move_card_to_todo!(card_id)
+
+add_comment_to_issue!
 
 puts "Done!"

@@ -44,9 +44,15 @@ def move_card_to_in_progress!(card_id)
   github_client.move_project_card(card_id, "top", column_id: GITHUB_PROJECT_IN_PROGRESS_COLUMN_ID)
 end
 
-# Script begin
+def add_comment_to_issue!
+  github_client.add_comment(GITHUB_REPO_NWO,
+    args[:issue_number],
+    "Beep boop. I saw you assigned this issue so I've moved it to in-progress \
+     on [the shared project board](#{GITHUB_PROJECT_BOARD_URL})."
+  )
+end
 
-puts "Arguments: #{args.to_h}"
+# Script begin
 
 unless magic_label_on_issue?
   puts "No magic labels on the issue."
@@ -64,5 +70,7 @@ end
 puts "Found card ID #{card_id}, moving to in progress..."
 
 move_card_to_in_progress!(card_id)
+
+add_comment_to_issue!
 
 puts "Done!"

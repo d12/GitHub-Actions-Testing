@@ -44,6 +44,14 @@ def move_card_to_done!(card_id)
   github_client.move_project_card(card_id, "top", column_id: GITHUB_PROJECT_DONE_COLUMN_ID)
 end
 
+def add_comment_to_issue!
+  github_client.add_comment(GITHUB_REPO_NWO,
+    args[:issue_number],
+    "Beep boop. I saw you closed this issue so I've moved it to done \
+     on [the shared project board](#{GITHUB_PROJECT_BOARD_URL})."
+  )
+end
+
 # Script begin
 
 puts "Arguments: #{args.to_h}"
@@ -56,5 +64,7 @@ end
 puts "Moving note to the done column"
 
 move_card_to_done!(find_card_id)
+
+add_comment_to_issue!
 
 puts "Done!"
