@@ -1,0 +1,32 @@
+name: Project Automation - Move to Todo
+
+on:
+  issues:
+    types: [assigned, unassigned]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: "2.6"
+
+      - name: Setup Ruby env
+        run: |
+          cd .github/scripts
+
+          sudo RUBYOPT="-W0" gem install bundler
+          RUBYOPT="-W0" bundle install
+
+      - name: Run the card_adder Ruby script
+        run: |
+          cd .github/scripts
+
+          RUBYOPT="-W0" bundle exec ruby move_to_todo.rb \
+            --action "${{github.event.action}}" \
+            --issue_number "${{github.event.issue.number}}" \
+            --github_token "${{ secrets.GITHUB_TOKEN }}"

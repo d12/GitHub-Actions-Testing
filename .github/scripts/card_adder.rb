@@ -15,6 +15,8 @@ opts = Slop.parse do |o|
   o.string "--github_token", "The GitHub token"
 end
 
+puts "Options: #{opts.to_h}"
+
 client = Octokit::Client.new(access_token: opts[:github_token])
 
 unless opts[:label_name] == MAGIC_LABEL_NAME
