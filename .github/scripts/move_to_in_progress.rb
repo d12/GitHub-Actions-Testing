@@ -18,10 +18,6 @@ def github_client
   @github_client ||= Octokit::Client.new(access_token: args[:github_token])
 end
 
-def issue_assigned?
-  args[:action] == "assigned"
-end
-
 def magic_label_on_issue?
   issue = github_client.issue(GITHUB_REPO_NWO, args[:issue_number])
   issue.labels.any? { |label| label.name == MAGIC_LABEL_NAME }
@@ -44,11 +40,6 @@ end
 # Script begin
 
 puts "Arguments: #{args.to_h}"
-
-unless issue_assigned?
-  puts "Not an assigned issue."
-  exit 0
-end
 
 unless magic_label_on_issue?
   puts "No magic labels on the issue."
