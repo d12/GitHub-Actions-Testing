@@ -39,7 +39,7 @@ end
 
 card_id = /Card ID: (\d+)/.match(matching_comment.body).captures.first
 unless card_id
-  puts "Error: Could not find Project Card ID. "
+  puts "Error: Could not find Project Card ID."
   exit 1
 end
 
