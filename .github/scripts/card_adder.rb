@@ -26,10 +26,6 @@ def event_for_magic_label?
   args[:label_name] == MAGIC_LABEL_NAME
 end
 
-def issue_labeled?
-  args[:action] == "labeled"
-end
-
 def add_card_to_board!
   github_client.create_project_card(GITHUB_PROJECT_TODO_COLUMN_ID,
     note: "(**From Borg**) [#{args[:issue_title]}](#{args[:issue_url]})"
@@ -51,11 +47,6 @@ puts "Arguments: #{args.to_h}"
 
 unless event_for_magic_label?
   puts "Label is not interesting. Bailing!"
-  exit 0
-end
-
-unless issue_labeled?
-  puts "Label was removed, not added. Bailing!"
   exit 0
 end
 
