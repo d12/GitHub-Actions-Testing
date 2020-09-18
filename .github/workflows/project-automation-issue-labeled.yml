@@ -31,7 +31,7 @@ jobs:
         run: |
           cd .github/scripts
 
-          RUBYOPT="-W0" bundle exec ruby issue_labeled.rb \
+          RUBYOPT="-W0" bundle exec ruby events/issue_labeled.rb \
             --label_name "${{github.event.label.name}}" \
             --issue_title "${{github.event.issue.title}}" \
             --issue_url "${{github.event.issue.html_url}}" \

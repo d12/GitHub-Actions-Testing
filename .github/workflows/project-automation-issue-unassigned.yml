@@ -31,6 +31,6 @@ jobs:
         run: |
           cd .github/scripts
 
-          RUBYOPT="-W0" bundle exec ruby issue_unassigned.rb \
+          RUBYOPT="-W0" bundle exec ruby events/issue_unassigned.rb \
             --issue_number "${{github.event.issue.number}}" \
             --github_token "${{ secrets.GITHUB_TOKEN }}"

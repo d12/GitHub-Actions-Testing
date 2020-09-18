@@ -1,6 +1,6 @@
 require "slop"
 require "yaml"
-require_relative "github_client"
+require_relative "../github_client"
 
 class BaseHandler
   def config

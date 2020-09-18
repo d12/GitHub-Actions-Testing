@@ -31,6 +31,6 @@ jobs:
         run: |
           cd .github/scripts
 
-          RUBYOPT="-W0" bundle exec ruby issue_closed.rb \
+          RUBYOPT="-W0" bundle exec ruby events/issue_closed.rb \
             --issue_number "${{github.event.issue.number}}" \
             --github_token "${{ secrets.GITHUB_TOKEN }}"
