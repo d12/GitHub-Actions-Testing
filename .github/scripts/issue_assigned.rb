@@ -1,3 +1,6 @@
+# issue_assigned.rb
+# Runs when an issue is assigned.
+
 require "slop"
 require "octokit"
 

@@ -1,3 +1,6 @@
+# issue_labeled.rb
+# Runs when an issue is labeled.
+
 require "slop"
 require "octokit"
 

@@ -1,17 +1,13 @@
-name: Project Automation - Move to Todo
+name: Project Automation - Issue Assigned
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   issues:
-    types: [unassigned]
+    types: [assigned]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   run:
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2
 
@@ -27,11 +23,11 @@ jobs:
           RUBYOPT="-W0" bundle update --bundler
           RUBYOPT="-W0" bundle install
 
-      - name: Run the card_adder Ruby script
+      - name: Run the issue_assigned Ruby script
         run: |
           cd .github/scripts
 
-          RUBYOPT="-W0" bundle exec ruby move_to_todo.rb \
+          RUBYOPT="-W0" bundle exec ruby issue_assigned.rb \
             --action "${{github.event.action}}" \
             --issue_number "${{github.event.issue.number}}" \
             --github_token "${{ secrets.GITHUB_TOKEN }}"

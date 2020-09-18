@@ -1,4 +1,4 @@
-name: Project Automation - Card Adder
+name: Project Automation - Issue Labeled
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -27,11 +27,11 @@ jobs:
           RUBYOPT="-W0" bundle update --bundler
           RUBYOPT="-W0" bundle install
 
-      - name: Run the card_adder Ruby script
+      - name: Run the issue_labeled Ruby script
         run: |
           cd .github/scripts
 
-          RUBYOPT="-W0" bundle exec ruby card_adder.rb \
+          RUBYOPT="-W0" bundle exec ruby issue_labeled.rb \
             --label_name "${{github.event.label.name}}" \
             --action "${{github.event.action}}" \
             --issue_title "${{github.event.issue.title}}" \
