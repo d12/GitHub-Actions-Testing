@@ -35,7 +35,8 @@ jobs:
             --action "${{github.event.action}}" \
             --issue_title "${{github.event.issue.title}}" \
             --issue_url "${{github.event.issue.html_url}}" \
-            --issue_number "${{github.event.issue.number}}"
+            --issue_number "${{github.event.issue.number}}" \
+            --github_token "${{ secrets.GITHUB_TOKEN }}"
       
       - name: Access the payload
         run: |
