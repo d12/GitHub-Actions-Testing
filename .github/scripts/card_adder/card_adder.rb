@@ -1,6 +1,5 @@
 require "slop"
 require "octokit"
-require "byebug"
 
 MAGIC_LABEL_NAME = "test"
 GITHUB_PROJECT_TODO_COLUMN_ID = 10860613
