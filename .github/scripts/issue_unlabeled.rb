@@ -2,12 +2,8 @@
 # Runs when an issue is labeled.
 
 require "slop"
-require "octokit"
-
-MAGIC_LABEL_NAME = "test"
-GITHUB_PROJECT_TODO_COLUMN_ID = 10860613
-GITHUB_PROJECT_BOARD_URL = "https://github.com/d12/GitHub-Actions-Testing/projects/1"
-GITHUB_REPO_NWO = "d12/GitHub-Actions-Testing"
+require "yaml"
+require_relative "github_client"
 
 def args
   @args ||= Slop.parse do |o|
@@ -17,45 +13,25 @@ def args
   end
 end
 
-def github_client
-  @github_client ||= begin
-    client = Octokit::Client.new(access_token: args[:github_token])
-    client.auto_paginate = true
-
-    client
+def config
+  @config ||= begin
+    YAML.load(File.read("config.yml"))
   end
+end
+
+def github_client
+  @github_client ||= GithubClient.new(
+    github_token: args[:github_token],
+    repo_name_with_owner: config["github_repo_name_with_owner"]
+  )
 end
 
 # Is this webhook event firing for the magic label?
 def event_for_magic_label?
-  args[:label_name] == MAGIC_LABEL_NAME
-end
-
-def find_card_id
-  comments = github_client.issue_comments(GITHUB_REPO_NWO, args[:issue_number])
-  return unless comments
-
-  matching_comment = comments.find_all { |c| /Card ID: \d+/ =~ c.body }.last
-  return unless matching_comment
-
-  /Card ID: (\d+)/.match(matching_comment.body).captures.first
-end
-
-def remove_card_from_board!(card_id)
-  github_client.delete_project_card(card_id)
-end
-
-def add_comment_to_issue!
-  github_client.add_comment(GITHUB_REPO_NWO,
-    args[:issue_number],
-    "Beep boop. I saw you removed the #{MAGIC_LABEL_NAME} label, \
-     I've removed this issue from [the shared project board](#{GITHUB_PROJECT_BOARD_URL})."
-  )
+  args[:label_name] == config["magic_label_name"]
 end
 
 # Script begin
-
-puts "Arguments: #{args.to_h}"
 
 unless event_for_magic_label?
   puts "Label is not interesting. Bailing!"
@@ -64,10 +40,15 @@ end
 
 puts "Removing note from project board..."
 
-result = remove_card_from_board!(find_card_id)
+card_id = github_client.find_card_id(issue_number: args[:issue_number])
+result = github_client.remove_card_from_board!(card_id: card_id)
 
 puts "Adding comment to issue..."
 
-add_comment_to_issue!
+github_client.add_comment_to_issue!(
+  issue_number: args[:issue_number],
+  message: "Beep boop. I saw you removed the #{config['magic_label_name']} label, \
+            I've removed this issue from [the shared project board](#{config['github_project_board_url']})."
+)
 
 puts "Done!"

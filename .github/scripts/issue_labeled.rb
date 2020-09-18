@@ -2,12 +2,8 @@
 # Runs when an issue is labeled.
 
 require "slop"
-require "octokit"
-
-MAGIC_LABEL_NAME = "test"
-GITHUB_PROJECT_TODO_COLUMN_ID = 10860613
-GITHUB_PROJECT_BOARD_URL = "https://github.com/d12/GitHub-Actions-Testing/projects/1"
-GITHUB_REPO_NWO = "d12/GitHub-Actions-Testing"
+require "yaml"
+require_relative "github_client"
 
 def args
   @args ||= Slop.parse do |o|
@@ -19,38 +15,25 @@ def args
   end
 end
 
-def github_client
-  @github_client ||= begin
-    client = Octokit::Client.new(access_token: args[:github_token])
-    client.auto_paginate = true
-
-    client
+def config
+  @config ||= begin
+    YAML.load(File.read("config.yml"))
   end
+end
+
+def github_client
+  @github_client ||= GithubClient.new(
+    github_token: args[:github_token],
+    repo_name_with_owner: config["github_repo_name_with_owner"]
+  )
 end
 
 # Is this webhook event firing for the magic label?
 def event_for_magic_label?
-  args[:label_name] == MAGIC_LABEL_NAME
-end
-
-def add_card_to_board!
-  github_client.create_project_card(GITHUB_PROJECT_TODO_COLUMN_ID,
-    note: "(**From Borg**) [#{args[:issue_title]}](#{args[:issue_url]})"
-  )
-end
-
-def add_comment_to_issue!(card_id)
-  github_client.add_comment(GITHUB_REPO_NWO,
-    args[:issue_number],
-    "Beep boop. I saw you labeled this issue with `#{MAGIC_LABEL_NAME}` \
-     so I've added it to [the shared project board](#{GITHUB_PROJECT_BOARD_URL}).\
-     \n\n<sub>Card ID: #{card_id}</sub>"
-  )
+  args[:label_name] == config['magic_label_name']
 end
 
 # Script begin
-
-puts "Arguments: #{args.to_h}"
 
 unless event_for_magic_label?
   puts "Label is not interesting. Bailing!"
@@ -59,10 +42,18 @@ end
 
 puts "Adding note to project board..."
 
-created_card = add_card_to_board!
+created_card = github_client.add_card_to_board!(
+  column_id: config["github_project_todo_column_id"],
+  note: "(**From Borg**) [#{args[:issue_title]}](#{args[:issue_url]})"
+)
 
 puts "Adding comment to issue..."
 
-add_comment_to_issue!(created_card.id)
+github_client.add_comment_to_issue!(
+  issue_number: args[:issue_number],
+  message: "Beep boop. I saw you labeled this issue with `#{config['magic_label_name']}` \
+            so I've added it to [the shared project board](#{config['github_project_board_url']}).\
+            \n\n<sub>Card ID: #{created_card.id}</sub>"
+)
 
 puts "Done!"

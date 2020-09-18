@@ -1,0 +1,6 @@
+magic_label_name: test
+github_repo_name_with_owner: d12/GitHub-Actions-Testing
+github_project_board_url: https://github.com/d12/GitHub-Actions-Testing/projects/1
+github_project_todo_column_id: 10860613
+github_project_in_progress_column_id: 10860614
+github_project_done_column_id: 10860615
