@@ -14,7 +14,12 @@ def args
 end
 
 def github_client
-  @github_client ||= Octokit::Client.new(access_token: args[:github_token])
+  @github_client ||= begin
+    client = Octokit::Client.new(access_token: args[:github_token])
+    client.auto_paginate = true
+
+    client
+  end
 end
 
 def magic_label_on_issue?

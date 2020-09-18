@@ -18,7 +18,12 @@ def args
 end
 
 def github_client
-  @github_client ||= Octokit::Client.new(access_token: args[:github_token])
+  @github_client ||= begin
+    client = Octokit::Client.new(access_token: args[:github_token])
+    client.auto_paginate = true
+
+    client
+  end
 end
 
 # Is this webhook event firing for the magic label?
@@ -59,7 +64,14 @@ end
 
 puts "Removing note from project board..."
 
-created_card = remove_card_from_board!(find_card_id)
+card_id = find_card_id
+puts card_id
+
+result = remove_card_from_board!(card_id)
+
+unless result
+  puts "Could not remove card from board"
+end
 
 puts "Adding comment to issue..."
 
