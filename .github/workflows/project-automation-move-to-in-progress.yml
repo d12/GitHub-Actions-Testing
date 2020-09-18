@@ -1,4 +1,4 @@
-name: Project Automation - Move to Todo
+name: Project Automation - Move to In Progress
 
 on:
   issues:
@@ -27,7 +27,7 @@ jobs:
         run: |
           cd .github/scripts
 
-          RUBYOPT="-W0" bundle exec ruby move_to_todo.rb \
+          RUBYOPT="-W0" bundle exec ruby move_to_in_progress.rb \
             --action "${{github.event.action}}" \
             --issue_number "${{github.event.issue.number}}" \
             --github_token "${{ secrets.GITHUB_TOKEN }}"
