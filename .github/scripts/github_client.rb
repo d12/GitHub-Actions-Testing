@@ -19,9 +19,7 @@ class GithubClient
   ### Projects
 
   def add_card_to_board!(column_id:, note:)
-    octokit_client.create_project_card(column_id,
-      note: "(**From Borg**) [#{args[:issue_title]}](#{args[:issue_url]})"
-    )
+    octokit_client.create_project_card(column_id, note: note)
   end
 
   def remove_card_from_board!(card_id:)
