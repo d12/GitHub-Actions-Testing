@@ -20,6 +20,7 @@ jobs:
           cd .github/scripts
 
           sudo RUBYOPT="-W0" gem install bundler
+          RUBYOPT="-W0" bundle update --bundler
           RUBYOPT="-W0" bundle install
 
       - name: Run the card_adder Ruby script
