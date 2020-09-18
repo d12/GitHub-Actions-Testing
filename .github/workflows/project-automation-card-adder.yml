@@ -1,5 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Project Automation - Card Adder
 
 # Controls when the action will run. Triggers the workflow on push or pull request
@@ -10,9 +8,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  add_card:
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -26,7 +22,7 @@ jobs:
           sudo RUBYOPT="-W0" gem install bundler
           RUBYOPT="-W0" bundle install
 
-      - name: Run the Ruby Script
+      - name: Run the card_adder Ruby script
         run: |
           cd .github/scripts
 
@@ -37,50 +33,3 @@ jobs:
             --issue_url "${{github.event.issue.html_url}}" \
             --issue_number "${{github.event.issue.number}}" \
             --github_token "${{ secrets.GITHUB_TOKEN }}"
-
-      - name: Access the payload
-        run: |
-          LABEL_NAME="${{github.event.label.name}}"
-          ACTION="${{github.event.action}}"
-          ISSUE_TITLE="${{github.event.issue.title}}"
-          ISSUE_URL="${{github.event.issue.html_url}}"
-          ISSUE_NUMBER="${{github.event.issue.number}}"
-
-          PROJECT_TODO_COL_ID=10860613
-          PROJECT_BOARD_URL="https://github.com/d12/GitHub-Actions-Testing/projects/1"
-
-          MAGIC_LABEL_NAME="test"
-
-          if [[ $LABEL_NAME != $MAGIC_LABEL_NAME ]]
-          then
-            echo "Not an interesting label. Skipping."
-            exit 0
-          fi
-
-          if [[ $ACTION != "labeled" ]]
-          then
-            echo "Label was removed, not added. Skipping."
-            exit 0
-          fi
-
-          echo "Magic label was added to issue."
-
-          echo "Adding note to project board..."
-          curl \
-          --url https://api.github.com/projects/columns/$PROJECT_TODO_COL_ID/cards \
-          -sS \
-          -X POST \
-          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          --header 'accept: application/vnd.github.inertia-preview+json' \
-          -d "{\"note\":\"(**From Borg**) [$ISSUE_TITLE]($ISSUE_URL)\nUnassigned\"}" > add_card_payload
-
-          CARD_URL=$(cat add_card_payload | jq .column_url -r)
-          CARD_ID=$(cat add_card_payload | jq .id -r)
-
-          echo "Adding comment to issue..."
-          curl \
-          --url https://api.github.com/repos/d12/GitHub-Actions-Testing/issues/${ISSUE_NUMBER}/comments \
-          -sS \
-          -X POST \
-          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          -d "{\"body\":\"Beep boop. Because this was labeled with $MAGIC_LABEL_NAME, I've added it to [the shared project board]($PROJECT_BOARD_URL).\n\n<sub>Card ID: $CARD_ID</sub>\"}"
