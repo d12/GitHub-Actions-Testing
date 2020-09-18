@@ -64,14 +64,7 @@ end
 
 puts "Removing note from project board..."
 
-card_id = find_card_id
-puts card_id
-
-result = remove_card_from_board!(card_id)
-
-unless result
-  puts "Could not remove card from board"
-end
+result = remove_card_from_board!(find_card_id)
 
 puts "Adding comment to issue..."
 

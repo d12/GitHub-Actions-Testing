@@ -1,11 +1,11 @@
-# issue_assigned.rb
-# Runs when an issue is assigned.
+# issue_closed.rb
+# Runs when an issue is closed.
 
 require "slop"
 require "octokit"
 
 MAGIC_LABEL_NAME = "test"
-GITHUB_PROJECT_IN_PROGRESS_COLUMN_ID = 10860614
+GITHUB_PROJECT_DONE_COLUMN_ID = 10860615
 GITHUB_PROJECT_BOARD_URL = "https://github.com/d12/GitHub-Actions-Testing/projects/1"
 GITHUB_REPO_NWO = "d12/GitHub-Actions-Testing"
 
@@ -40,8 +40,8 @@ def find_card_id
   /Card ID: (\d+)/.match(matching_comment.body).captures.first
 end
 
-def move_card_to_in_progress!(card_id)
-  github_client.move_project_card(card_id, "top", column_id: GITHUB_PROJECT_IN_PROGRESS_COLUMN_ID)
+def move_card_to_done!(card_id)
+  github_client.move_project_card(card_id, "top", column_id: GITHUB_PROJECT_DONE_COLUMN_ID)
 end
 
 # Script begin
@@ -49,20 +49,12 @@ end
 puts "Arguments: #{args.to_h}"
 
 unless magic_label_on_issue?
-  puts "No magic labels on the issue."
+  puts "Label is not interesting. Bailing!"
   exit 0
 end
 
-puts "Searching for Project Card ID..."
+puts "Moving note to the done column"
 
-card_id = find_card_id
-unless card_id
-  puts "Error: Could not find Project Card ID."
-  exit 1
-end
-
-puts "Found card ID #{card_id}, moving to in progress..."
-
-move_card_to_in_progress!(card_id)
+move_card_to_done!(find_card_id)
 
 puts "Done!"
