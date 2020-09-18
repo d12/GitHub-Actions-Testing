@@ -8,7 +8,6 @@ GITHUB_REPO_NWO = "d12/GitHub-Actions-Testing"
 
 def args
   @args ||= Slop.parse do |o|
-    o.string "--action", "The label action taken. One of 'labeled' or 'unlabeled'"
     o.string "--issue_number", "The number of the issue"
     o.string "--github_token", "The GitHub token"
   end

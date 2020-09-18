@@ -33,7 +33,6 @@ jobs:
 
           RUBYOPT="-W0" bundle exec ruby issue_labeled.rb \
             --label_name "${{github.event.label.name}}" \
-            --action "${{github.event.action}}" \
             --issue_title "${{github.event.issue.title}}" \
             --issue_url "${{github.event.issue.html_url}}" \
             --issue_number "${{github.event.issue.number}}" \
