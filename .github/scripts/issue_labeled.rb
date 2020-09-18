@@ -42,8 +42,8 @@ end
 def add_comment_to_issue!(card_id)
   github_client.add_comment(GITHUB_REPO_NWO,
     args[:issue_number],
-    "Beep boop. Because this was labeled with #{MAGIC_LABEL_NAME}, \
-     I've added it to [the shared project board](#{GITHUB_PROJECT_BOARD_URL}).\
+    "Beep boop. I saw you labeled this issue with #{MAGIC_LABEL_NAME} \
+     so I've added it to [the shared project board](#{GITHUB_PROJECT_BOARD_URL}).\
      \n\n<sub>Card ID: #{card_id}</sub>"
   )
 end
