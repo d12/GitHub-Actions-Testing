@@ -2,7 +2,7 @@ name: Project Automation - Move to In Progress
 
 on:
   issues:
-    types: [assigned, unassigned]
+    types: [assigned]
 
 jobs:
   run:
