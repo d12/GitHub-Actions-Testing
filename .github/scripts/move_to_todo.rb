@@ -1,6 +1,5 @@
 require "slop"
 require "octokit"
-require "byebug"
 
 MAGIC_LABEL_NAME = "test"
 PROJECT_IN_PROGRESS_COLUMN_ID = 10860614
