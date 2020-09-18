@@ -2,3 +2,4 @@
 source 'https://rubygems.org'
 
 gem "slop"
+gem "octokit", "~> 4.0"
