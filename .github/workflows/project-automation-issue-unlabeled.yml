@@ -1,4 +1,4 @@
-name: Project Automation - Issue Labeled
+name: Project Automation - Issue Unlabeled
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -31,7 +31,7 @@ jobs:
         run: |
           cd .github/scripts
 
-          RUBYOPT="-W0" bundle exec ruby issue_labeled.rb \
+          RUBYOPT="-W0" bundle exec ruby issue_unlabeled.rb \
             --label_name "${{github.event.label.name}}" \
             --issue_number "${{github.event.issue.number}}" \
             --github_token "${{ secrets.GITHUB_TOKEN }}"
